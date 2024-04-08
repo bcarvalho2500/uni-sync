@@ -20,8 +20,8 @@ pub struct Channel {
     pub speed: usize,
 }
 
-const VENDOR_IDS: [u16; 1] = [ 0x0cf2 ];
-const PRODUCT_IDS: [u16; 7] = [ 0x7750, 0xa100, 0xa101, 0xa102, 0xa103, 0xa104, 0xa105 ];
+const VENDOR_IDS: [u16; 2] = [ 0x0cf2, 0x0416 ];
+const PRODUCT_IDS: [u16; 8] = [ 0x7750, 0xa100, 0xa101, 0xa102, 0xa103, 0xa104, 0xa105, 0x7372 ];
 
 pub fn run(mut existing_configs: Configs) -> Configs {
 
@@ -78,6 +78,7 @@ pub fn run(mut existing_configs: Configs) -> Configs {
                 0xa102 => hid.write(&[224, 16, 97, sync_byte, 0, 0, 0]), // SLI
                 0xa103|0xa105 => hid.write(&[224, 16, 97, sync_byte, 0, 0, 0]), // SLv2
                 0xa104 => hid.write(&[224, 16, 97, sync_byte, 0, 0, 0]), // ALv2
+                0x7372 => hid.write(&[224, 16, 97, sync_byte, 0, 0, 0]), // TL
                 _ => hid.write(&[224, 16, 48, sync_byte, 0, 0, 0]), // SL
             };
 
@@ -100,6 +101,7 @@ pub fn run(mut existing_configs: Configs) -> Configs {
                     0xa102 => hid.write(&[224, 16, 98, channel_byte]), // SLI
                     0xa103|0xa105 => hid.write(&[224, 16, 98, channel_byte]), // SLv2
                     0xa104 => hid.write(&[224, 16, 98, channel_byte]), // ALv2
+                    0x7372 => hid.write(&[224, 16, 98, channel_byte]), // TL
                     _ => hid.write(&[224, 16, 49, channel_byte]), // SL
                 };
 
@@ -114,7 +116,8 @@ pub fn run(mut existing_configs: Configs) -> Configs {
 
                     let speed_800_1900: u8 = ((800.0 + (11.0 * speed)) as usize / 19).try_into().unwrap();
                     let speed_250_2000: u8 = ((250.0 + (17.5 * speed)) as usize / 20).try_into().unwrap();
-                    let speed_200_2100: u8 = ((200.0 + (19.0 * speed)) as usize  / 21).try_into().unwrap();
+                    let speed_200_2100: u8 = ((200.0 + (19.0 * speed)) as usize / 21).try_into().unwrap();
+                    let speed_200_2600: u8 = ((200.0 + (24.0 * speed)) as usize / 26).try_into().unwrap();
 
                     let _ = match &hiddevice.product_id() {
                         0xa100|0x7750 => hid.write(&[224, (x+32).try_into().unwrap(), 0, speed_800_1900]), // SL
@@ -122,6 +125,7 @@ pub fn run(mut existing_configs: Configs) -> Configs {
                         0xa102 => hid.write(&[224, (x+32).try_into().unwrap(), 0, speed_200_2100]), // SLI
                         0xa103|0xa105 => hid.write(&[224, (x+32).try_into().unwrap(), 0, speed_250_2000]), // SLv2
                         0xa104 => hid.write(&[224, (x+32).try_into().unwrap(), 0, speed_250_2000]), // ALv2
+                        0x7372 => hid.write(&[224, (x+32).try_into().unwrap(), 0, speed_200_2600]), // TL
                         _ => hid.write(&[224, (x+32).try_into().unwrap(), 0, speed_800_1900]), // SL
                     };
 

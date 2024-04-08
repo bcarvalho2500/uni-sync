@@ -19,6 +19,7 @@ This tool allows you to configure the synchronization settings for Uni Fan contr
 | LianLi-UNI SL-Infinity | `a102`       | Supported | ✔️          | ✔️           | ✔️            |
 | LianLi-UNI SL v2       | `a103, a105` | Untested  | ✔️          | ✔️           | ✔️            |
 | LianLi-UNI AL v2       | `a104`       | Untested  | ✔️          | ✔️           | ✔️            |
+| LianLi-UNI TL          | `7372`       | Untested  | ✔️          | ✔️           | ✔️            |
 
 ## Installation
 
